@@ -21,7 +21,7 @@
 
 namespace OpenXcom
 {
-const float PROGRESS_LIMIT_UNKNOWN = 0.333f;
+const float PROGRESS_LIMIT_UNKNOWN_DIVISOR = 3.0f;
 const float PROGRESS_LIMIT_POOR = 0.07f;
 const float PROGRESS_LIMIT_AVERAGE = 0.13f;
 const float PROGRESS_LIMIT_GOOD = 0.25f;
@@ -137,12 +137,13 @@ void ResearchProject::save(YAML::YamlNodeWriter writer) const
  */
 std::string ResearchProject::getResearchProgress() const
 {
-	float progress = (float)getSpent() / getRules()->getCost();
 	if (getAssigned() == 0)
 	{
 		return "STR_NONE";
 	}
-	else if (progress <= PROGRESS_LIMIT_UNKNOWN)
+	
+	int remaining = getCost() - getSpent();
+	if (remaining >= (float)getRules()->getCost() / PROGRESS_LIMIT_UNKNOWN_DIVISOR)
 	{
 		return "STR_UNKNOWN";
 	}
