@@ -21,7 +21,7 @@
 
 namespace OpenXcom
 {
-const float PROGRESS_LIMIT_UNKNOWN_DIVISOR = 3.0f;
+const float PROGRESS_LIMIT_UNKNOWN = 0.666f;
 const float PROGRESS_LIMIT_POOR = 0.07f;
 const float PROGRESS_LIMIT_AVERAGE = 0.13f;
 const float PROGRESS_LIMIT_GOOD = 0.25f;
@@ -142,8 +142,8 @@ std::string ResearchProject::getResearchProgress() const
 		return "STR_NONE";
 	}
 	
-	int remaining = getCost() - getSpent();
-	if (remaining >= (float)getRules()->getCost() / PROGRESS_LIMIT_UNKNOWN_DIVISOR)
+	float remaining = getCost() - getSpent();
+	if (remaining / getRules()->getCost() >= PROGRESS_LIMIT_UNKNOWN)
 	{
 		return "STR_UNKNOWN";
 	}
